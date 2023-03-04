@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const donenv = require("dotenv").config();
 const DB_URL = process.env.DB_URL;
 
-
-
 // main().catch((err) => {
 //     if (!err)
 //         return console.log(
@@ -11,8 +9,6 @@ const DB_URL = process.env.DB_URL;
 //         );
 //     return console.log(`-------------------Error In Database-------------------`);
 // });
-
-
 // async function main() {
 //     console.log("inside main")
 //     await mongoose.connect(DB_URL);

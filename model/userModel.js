@@ -13,21 +13,26 @@ const userSchema = mongoose.Schema({
         unique: [true, "E-mail must be unique"],
         match: emailFormat,
     },
-    image_url: { type: String },
+    address: { type: String },
+    image_url: { type: String, default: `../assets/user-defualt.avif` },
     password: {
         type: String,
         minlength: 8,
         match: passwdFormat,
         required: [true, "Password is Required"],
     },
-    // book_status: {
-    //     type: String,
-    //     enum: ['Read', 'currently reading', "Want to read"],
-    //     default: "new"
-    // },
     is_admin: { type: Boolean, default: false },
-    token: { type: String, required: [true, "Token is required"] },
+    // token: { type: String, required: [true, "Token is required"] },
+});
 
-})
+const userModel = mongoose.model("user", userSchema);
+module.exports = userModel;
 
-module.exports = mongoose.model("user", userSchema);
+
+// book_review: [{
+//     book_id: { type: mongoose.Schema.Types.ObjectId, ref: "book", required: [true, "Book id is required"] },
+//     rate: { type: Number, default: 0 },
+//     review: { type: String, default: null },
+//     state: { type: String, enum: ['New', 'Read', 'currently reading', "Want to read"], default: "New" },
+//     _id: { _id: false }
+// }],
