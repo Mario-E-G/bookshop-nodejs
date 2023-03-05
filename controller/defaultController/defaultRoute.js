@@ -1,5 +1,8 @@
 const bookModel = require("../../model/bookModel")
+const categoryModel = require("../../model/categoryModel");
 
+
+//====================get all book==========================
 const GetAllBooksForUsers = async (req, res) => {
     try{
         const book = await bookModel.find({});
@@ -13,6 +16,40 @@ const GetAllBooksForUsers = async (req, res) => {
     }
 }
 
-module.exports = {
-    GetAllBooksForUsers
+
+//====================get all category==========================
+
+const getAllCategory = async (req, res) => {
+    try {
+        const category = await categoryModel.find({});
+        if (category) {
+            return res.status(200).send(category);
+        } else {
+            return res.status(404).json({ Message: "No Category Found" });
+        }
+    } catch (err) {
+        return res.status(500).send({ Message: "Try again later....." });
+    };
 }
+//==================getbyid==================================
+
+const getCategorybyid = async (req, res) => {
+    try {
+        const category = await categoryModel.findById(req.params.id);
+        if (category) {
+            return res.status(200).send(category)
+        } else {
+            return res.status(404).json({ Message: "Category is not Exist" })
+        }
+    } catch (err) {
+        return res.status(500).send({ Message: "Try again later....." })
+    };
+};
+
+
+module.exports = {
+    GetAllBooksForUsers,
+    getAllCategory,
+    getCategorybyid,
+}
+
