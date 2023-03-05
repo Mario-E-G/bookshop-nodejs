@@ -7,6 +7,7 @@ const dbConnection = require("./configuration/config");
 const PORT = process.env.PORT;
 const adminRoute = require("./route/adminRoutes/adminRoute.js");
 const userRoute = require("./route/userRoutes/userRoute.js");
+const defaultRoute = require("./route/defaultRoutes/defaultRoute.js");
 const app = express();
 app.use(express.json());
 // Middleware To log all action happen to DB
@@ -14,9 +15,7 @@ app.use(morgan("Method: :method - URL: :url - STATUS: :status - RESPONSE TIME: :
 
 app.use("/admin", adminRoute);
 app.use("/user", userRoute);
-app.use("/", (req, res) => {
-  return res.send("Root Page");
-});
+app.use("/", defaultRoute)
 
 app.listen(PORT, (err) => {
   if (!err) {
