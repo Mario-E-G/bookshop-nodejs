@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = process.env.TOKEN_KEY;
+const ADMIN_TOKEN_KEY = process.env.ADMIN_TOKEN_KEY
+const USER_TOKEN_KEY = process.env.USER_TOKEN_KEY
 const bcrypt = require("bcrypt");
 const userModel = require("../../model/userModel");
 
@@ -15,17 +16,17 @@ const auth = async (req, res, next) => {
     }
     // Validate if user exist in our database
     const user = await userModel.findOne({ email });
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user) {
       // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
+      let token;
+      if (user.is_admin) {
+        token = jwt.sign({ user_id: user._id, email }, ADMIN_TOKEN_KEY, { expiresIn: "2h" });
+      } else {
+        token = jwt.sign({ user_id: user._id, email }, USER_TOKEN_KEY, { expiresIn: "2h" });
+      }
+
       user.token = token;
-      return res.status(200).json(user);
+      return res.status(200).json(user.token);
     } else {
       return res.status(400).send("Invalid Credentials");
     }

@@ -1,5 +1,5 @@
 const express = require("express");
-const { GetAllBooksForUsers, getAllCategory, getCategorybyid } = require("../../controller/defaultController/defaultRoute");
+const { GetAllBooksForUsers, getAllCategory, getCategorybyid } = require("../../controller/forAllUsersController/defaultRoute");
 const router = express.Router();
 
 //=========get all books==================
