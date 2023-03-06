@@ -5,7 +5,7 @@ const userModel = require("../../model/userModel");
 
 // const auth = require("./middlewares/auth");
 
-const auth = async (req, res, next) => {
+const loginAuth = async (req, res, next) => {
   //return res.send(req.headers);
   try {
     const { email, password } = req.body;
@@ -34,5 +34,5 @@ const auth = async (req, res, next) => {
   }
 }
 module.exports = {
-  auth,
+  loginAuth,
 }
