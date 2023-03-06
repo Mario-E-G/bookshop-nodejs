@@ -1,16 +1,36 @@
 const express = require("express");
-const { GetAllBooksForUsers, getAllCategory, getCategorybyid } = require("../../controller/forAllUsersController/defaultRoute");
+const {
+    getAllBooksForUsers,
+    getBookById,
+    getAllCategory,
+    getAuthorById,
+    getBookByCategoryId,
+    getAllAuthor } = require("../../controller/forAllUsersController/defaultRoute");
+const { auth } = require("../../controller/auth/logInAuth");
 const router = express.Router();
 
-//=========get all books==================
-router.get("/book", GetAllBooksForUsers);
 
-//=========get all categories==================
+
+//=============Login===========================================
+router.post("/login", auth);
+
+//=========getAllBooks===============================================
+router.get("/book", getAllBooksForUsers);
+
+//====================getABookById ================================
+router.get('/book/:id', getBookById);
+
+//=========getAllCategories==========================================
 router.get("/category", getAllCategory);
 
-//====================getcatbyid ===============================
-router.get('/category/:id', getCategorybyid);
+//====================getBookCategoryById ===============================
+router.get('/category/:id', getBookByCategoryId);
 
+//====================getAuthortById ================================
+router.get('/author/:id', getAuthorById);
+
+//=========getAllAuthors==========================================
+router.get("/author", getAllAuthor);
 
 
 module.exports = router;

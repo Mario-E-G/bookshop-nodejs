@@ -6,11 +6,13 @@ const donenv = require("dotenv").config();
 const dbConnection = require("./configuration/config");
 const PORT = process.env.PORT;
 const adminRoute = require("./route/adminRoutes/adminRoute.js");
-const userRoute = require("./route/userRoutes/userRoute.js");
+const userRoute = require("./route/userRoutesForAdmin/userRoute.js");
 const defaultRoute = require("./route/routesForAllUsers/defaultRoute");
-const loginRoute = require("./route/logIn/logIn.js");
+const userProfileRoute = require("./route/userProfileRoute/userProfileRoute");
 const loginAuth = require("./middleware/middlewareLoginAuth");
 const adminAuth = require("./middleware/adminAuth");
+
+
 
 const app = express();
 app.use(express.json());
@@ -18,11 +20,10 @@ app.use(express.json());
 app.use(morgan("Method: :method - URL: :url - STATUS: :status - RESPONSE TIME: :response-time ms - DATE: :date[clf]"));
 
 
-
-app.use("/login", loginRoute);
 app.use("/admin", loginAuth, adminAuth, adminRoute);
 app.use("/user", loginAuth, adminAuth, userRoute);
-app.use("/", defaultRoute);
+// app.use("/profile", loginAuth, userProfileRoute);
+app.use("/", [defaultRoute, userProfileRoute]);
 
 
 

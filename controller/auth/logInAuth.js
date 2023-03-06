@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const ADMIN_TOKEN_KEY = process.env.ADMIN_TOKEN_KEY
 const USER_TOKEN_KEY = process.env.USER_TOKEN_KEY
-const bcrypt = require("bcrypt");
 const userModel = require("../../model/userModel");
 
 // const auth = require("./middlewares/auth");
@@ -26,7 +25,7 @@ const auth = async (req, res, next) => {
       }
 
       user.token = token;
-      return res.status(200).json(user.token);
+      return res.status(200).json(user);
     } else {
       return res.status(400).send("Invalid Credentials");
     }

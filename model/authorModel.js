@@ -5,8 +5,9 @@ const authorSchema = mongoose.Schema({
     last_name: { type: String, minLength: 3, maxLength: 25, required: [true, "last name is required"] },
     image_url: { type: String },
     date_of_birth: { type: Date },
-    author_info: { type: String }
+    author_info: { type: String },
 });
+
 
 const authorModel = mongoose.model("author", authorSchema);
 module.exports = authorModel;
