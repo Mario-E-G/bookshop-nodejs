@@ -17,13 +17,13 @@ const registerAuth = async (req, res) => {
 
   // Validate user input
   if (!(age && email && password && first_name && last_name)) {
-    return res.status(400).send("Some inputs are missing");
+    return res.status(400).send({ Message: "Some inputs are missing" });
   }
   // check if user already exist
   // Validate if user exist in our database
   const oldUser = await userModel.findOne({ email });
   if (oldUser) {
-    return res.status(409).send("User Already Exist. Please Login");
+    return res.status(409).send({ Message: "User Already Exist. Please Login" });
   }
   const encryptedPassword = await bcrypt.hash(password, 15);
 

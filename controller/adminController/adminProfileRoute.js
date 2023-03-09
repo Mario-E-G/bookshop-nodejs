@@ -10,6 +10,7 @@ const adminHomeRoute = async (req, res) => {
 }
 
 
+
 ///////////////////////////////////GetAll//////////////////////////////////////
 // get all categories
 const adminGetAllCategory = async (req, res) => {
@@ -103,7 +104,9 @@ const adminAddNewCategory = async (req, res) => {
     const newCategory = { ...req.body };
     try {
         const createdCategory = await categoryModel.create(newCategory);
-        return res.json(createdCategory);
+        if (createdCategory) {
+            return res.status(200).json(createdCategory);
+        }
     } catch (error) {
         return res.status(500).send({ Message: error.message });
     }
@@ -112,8 +115,10 @@ const adminAddNewCategory = async (req, res) => {
 const adminAddNewBook = async (req, res) => {
     try {
         const newBook = { ...req.body };
-        const book = await bookModel.create(newBook);
-        return res.json(book);
+        const book = await bookModel.create(newBook)
+        if (newBook) {
+            return res.status(200).json(book)
+        }
     } catch (error) {
         return res.status(500).send({ Message: error.message });
     }
@@ -121,9 +126,11 @@ const adminAddNewBook = async (req, res) => {
 //add new author
 const adminAddNewAuthor = async (req, res) => {
     try {
-        const newauhtor = { ...req.body };
-        const author = await authorModel.create(newauhtor);
-        return res.send(author);
+        const newAuhtor = { ...req.body };
+        const author = await authorModel.create(newAuhtor);
+        if (author) {
+            return res.status(200).send(author);
+        }
     } catch (error) {
         return res.status(500).send({ Message: error.message });
     }
