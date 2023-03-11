@@ -7,7 +7,7 @@ const {
   getBookByCategoryId,
   getAllAuthor,
 } = require("../../controller/forAllUsersController/defaultRoute");
-const { auth } = require("../../controller/auth/logInAuth");
+const { loginAuth } = require("../../controller/auth/logInAuth");
 const { registerAuth } = require("../../controller/auth/registerAuth");
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/register", registerAuth);
 
 //=============Login===========================================
-router.post("/login", auth);
+router.post("/login", loginAuth);
 
 //=========getAllBooks===============================================
 router.get("/book", getAllBooksForUsers);

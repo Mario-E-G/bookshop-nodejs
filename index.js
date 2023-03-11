@@ -10,15 +10,20 @@ const userProfileRoute = require("./route/userProfileRoute/userProfileRoute");
 const loginAuth = require("./middleware/middlewareLoginAuth");
 const adminAuth = require("./middleware/adminAuth");
 const fs = require("fs");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 
 // Middleware To log all action happen to DB
-app.use(morgan('"Method: :method - URL: :url - STATUS: :status - RESPONSE TIME: :response-time ms - DATE: :date[clf]"', {
-  stream: fs.createWriteStream('./logs/logs.txt', { flags: 'a' })
-}))
-
+app.use(
+  morgan(
+    '"Method: :method - URL: :url - STATUS: :status - RESPONSE TIME: :response-time ms - DATE: :date[clf]"',
+    {
+      stream: fs.createWriteStream("./logs/logs.txt", { flags: "a" }),
+    }
+  )
+);
 
 app.use("/admin", loginAuth, adminAuth, [adminRoute, userRoute]);
 app.use("/", [defaultRoute, userProfileRoute]);

@@ -6,7 +6,11 @@ const bookReviewModel = require("../../model/bookReviewModel");
 //====================getAllBooks==========================
 const getAllBooksForUsers = async (req, res) => {
   try {
-    const book = await bookModel.find({});
+    const book = await bookModel.find({}).populate({
+      path: "author_id",
+      model: "author",
+      select: "first_name last_name",
+    });
     if (book.length > 0) {
       return res.status(200).send(book);
     } else {
@@ -20,12 +24,38 @@ const getAllBooksForUsers = async (req, res) => {
 //==================getBookById==================================
 const getBookById = async (req, res) => {
   try {
-    const book = await bookModel.findById(req.params.id);
+    const book = await bookModel.findById(req.params.id).populate([
+      {
+        path: "author_id",
+        model: "author",
+        select: "first_name last_name",
+      },
+      {
+        path: "category_id",
+        model: "category",
+        select: "name",
+      },
+    ]);
     const bookReview = await bookReviewModel
-      .find({ rate: { $ne: null } })
+      .find({
+        rate: { $ne: null },
+        book_id: req.params.id,
+      })
       .count(); // Remeber to test this phrase
+
+    const review = await bookReviewModel
+      .find(
+        { book_id: req.params.id },
+        { rate: 1, review: 1, book_status: 1, user_id: 1 }
+      )
+      .populate([
+        { path: "user_id", model: "user", select: "first_name image_url" },
+      ]);
+
     if (book) {
-      return res.status(200).send(book, { totalRates: bookReview });
+      return res
+        .status(200)
+        .send({ totalRates: bookReview, book: book, review: review });
     } else {
       return res.status(404).json({ Message: "Book is not Exist" });
     }
