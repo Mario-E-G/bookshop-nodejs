@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require("../../middleware/multer");
 const {
   getAllBooksForUsers,
   getBookById,
@@ -12,7 +13,7 @@ const { registerAuth } = require("../../controller/auth/registerAuth");
 const router = express.Router();
 
 //=============Register==========================================
-router.post("/register", registerAuth);
+router.post("/register", upload.single("image"), registerAuth);
 
 //=============Login===========================================
 router.post("/login", loginAuth);
