@@ -82,7 +82,7 @@ const getAllCategory = async (req, res) => {
 const getBookByCategoryId = async (req, res) => {
   try {
     const book = await bookModel
-      .find({ category_id: req.params.id }, { image_url: 1, name: 1, _id: 0 })
+      .find({ category_id: req.params.id }, { image_url: 1, name: 1, _id: 1 })
       .populate({
         path: "author_id",
         select: { first_name: 1, last_name: 1, _id: 0 },

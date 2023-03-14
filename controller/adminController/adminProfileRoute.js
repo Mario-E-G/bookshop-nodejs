@@ -93,6 +93,7 @@ const adminGetAuthorById = async (req, res) => {
 //add new Category
 const adminAddNewCategory = async (req, res) => {
   const newCategory = { ...req.body };
+  console.log(newCategory);
   try {
     const createdCategory = await categoryModel.create(newCategory);
     if (createdCategory) {

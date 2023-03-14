@@ -6,7 +6,7 @@ const bookReviewSchema = mongoose.Schema({
     rate: { type: Number, default: 0 },
     average_rate: { type: Number, default: 0 },
     review: { type: String, default: null },
-    book_status: { type: String, enum: ['new', 'read', 'currently reading', "want to read"], default: "new" },
+    book_status: { type: String, enum: ['new', 'read', 'currently_reading', "want_to_read"], default: "new" },
 });
 
 

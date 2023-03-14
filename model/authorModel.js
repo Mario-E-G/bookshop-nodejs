@@ -13,7 +13,10 @@ const authorSchema = mongoose.Schema({
     maxLength: 25,
     required: [true, "last name is required"],
   },
-  image_url: { type: String, default: "../assets/user-defualt.avif" },
+  image_url: {
+    type: String,
+    default: `http://localhost:5000/images/user-defualt.png`,
+  },
   date_of_birth: { type: Date },
   author_info: { type: String },
 });

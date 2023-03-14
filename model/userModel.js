@@ -24,10 +24,13 @@ const userSchema = mongoose.Schema({
     unique: [true, "E-mail must be unique"],
     // match: emailFormat,
   },
-  gender: { type: String, enum: ["male", "female"] },
+  gender: { type: String, enum: ["male", "female", ""], default: "" },
   birth_date: { type: Date },
   address: { type: String },
-  image_url: { type: String, default: `../assets/user-defualt.avif` },
+  image_url: {
+    type: String,
+    default: `http://localhost:5000/images/user-defualt.png`,
+  },
   password: {
     type: String,
     minlength: 8,
