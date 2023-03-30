@@ -24,7 +24,7 @@ const adminGetAllCategory = async (req, res) => {
 // get all books
 const adminGetAllBook = async (req, res) => {
   try {
-    const book = await bookModel.find({}).populate();
+    const book = await bookModel.find({}).populate("category_id").populate("author_id");
     if (book) {
       return res.send(book);
     } else {
@@ -92,8 +92,14 @@ const adminGetAuthorById = async (req, res) => {
 //////////////////////////////////////Add////////////////////////////////////////
 //add new Category
 const adminAddNewCategory = async (req, res) => {
-  const newCategory = { ...req.body };
-  console.log(newCategory);
+  let image_url;
+  let newCategory;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    newCategory = { ...req.body, image_url: image_url };
+  } else {
+    newCategory = { ...req.body };
+  }
   try {
     const createdCategory = await categoryModel.create(newCategory);
     if (createdCategory) {
@@ -105,8 +111,15 @@ const adminAddNewCategory = async (req, res) => {
 };
 //add new book
 const adminAddNewBook = async (req, res) => {
+  let image_url;
+  let newBook;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    newBook = { ...req.body, image_url: image_url };
+  } else {
+    newBook = { ...req.body };
+  }
   try {
-    const newBook = { ...req.body };
     const book = await bookModel.create(newBook);
     if (newBook) {
       return res.status(200).json(book);
@@ -117,8 +130,15 @@ const adminAddNewBook = async (req, res) => {
 };
 //add new author
 const adminAddNewAuthor = async (req, res) => {
+  let image_url;
+  let newAuhtor;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    newAuhtor = { ...req.body, image_url: image_url };
+  } else {
+    newAuhtor = { ...req.body };
+  }
   try {
-    const newAuhtor = { ...req.body };
     const author = await authorModel.create(newAuhtor);
     if (author) {
       return res.status(200).send(author);
@@ -131,7 +151,14 @@ const adminAddNewAuthor = async (req, res) => {
 /////////////////////////////////////Update///////////////////////////////////////
 //update category
 const adminUpdateCategory = async (req, res) => {
-  const updatedCategory = { ...req.body };
+  let updatedCategory;
+  let image_url;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    updatedCategory = { ...req.body, image_url: image_url };
+  } else {
+    updatedCategory = { ...req.body };
+  }
   try {
     const category = await categoryModel.findByIdAndUpdate(
       req.params.id,
@@ -149,7 +176,14 @@ const adminUpdateCategory = async (req, res) => {
 };
 //update book
 const adminUpdateBook = async (req, res) => {
-  const bookData = { ...req.body };
+  let image_url;
+  let bookData;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    bookData = { ...req.body, image_url: image_url };
+  } else {
+    bookData = { ...req.body };
+  }
   try {
     const book = await bookModel.findByIdAndUpdate(req.params.id, bookData, {
       new: true,
@@ -165,7 +199,14 @@ const adminUpdateBook = async (req, res) => {
 };
 //update author
 const adminUpdateAuthor = async (req, res) => {
-  const authorData = { ...req.body };
+  let image_url;
+  let authorData;
+  if (req.file) {
+    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+    authorData = { ...req.body, image_url: image_url };
+  } else {
+    authorData = { ...req.body };
+  }
   try {
     const author = await authorModel.findByIdAndUpdate(
       req.params.id,

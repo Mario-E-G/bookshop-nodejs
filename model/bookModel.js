@@ -15,6 +15,7 @@ const bookSchema = mongoose.Schema({
     type: String,
     requierd: [true, "Book description is required"],
   },
+  price: { type: Number, default: 0 },
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "category",

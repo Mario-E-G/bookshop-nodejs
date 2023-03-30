@@ -2,6 +2,7 @@ const bookModel = require("../../model/bookModel");
 const categoryModel = require("../../model/categoryModel");
 const authorModel = require("../../model/authorModel");
 const bookReviewModel = require("../../model/bookReviewModel");
+const reviewModel = require("../../model/review");
 
 //====================getAllBooks==========================
 const getAllBooksForUsers = async (req, res) => {
@@ -28,7 +29,7 @@ const getBookById = async (req, res) => {
       {
         path: "author_id",
         model: "author",
-        select: "first_name last_name",
+        select: "first_name last_name image_url",
       },
       {
         path: "category_id",
@@ -41,7 +42,7 @@ const getBookById = async (req, res) => {
         rate: { $ne: null },
         book_id: req.params.id,
       })
-      .count(); // Remeber to test this phrase
+      .count(); // Remeber to test this phrase // tested and works good
 
     const review = await bookReviewModel
       .find(
@@ -49,13 +50,31 @@ const getBookById = async (req, res) => {
         { rate: 1, review: 1, book_status: 1, user_id: 1 }
       )
       .populate([
-        { path: "user_id", model: "user", select: "first_name image_url" },
+        {
+          path: "user_id",
+          model: "user",
+          select: "first_name last_name image_url",
+        },
       ]);
 
+    const update_average_rate = await bookReviewModel.aggregate([
+      { $group: { _id: "$book_id", avg_val: { $avg: "$rate" } } },
+    ]);
+    // console.log(update_average_rate);
+    update_average_rate.forEach(async (book) => {
+      await bookReviewModel.updateMany(
+        { book_id: req.body.id },
+        { $set: { average_rate: book.avg_val } }
+      );
+    });
+
     if (book) {
-      return res
-        .status(200)
-        .send({ totalRates: bookReview, book: book, review: review });
+      return res.status(200).send({
+        totalRates: bookReview,
+        book: book,
+        review: review,
+        avg_rate: update_average_rate[0],
+      });
     } else {
       return res.status(404).json({ Message: "Book is not Exist" });
     }
@@ -102,7 +121,23 @@ const getAuthorById = async (req, res) => {
   try {
     const author = await authorModel.findById(req.params.id);
     if (author) {
-      return res.status(200).send(author);
+      const author_id = author._id;
+      const author_book = await bookModel.find(
+        { author_id: author_id },
+        { book_id: 1, name: 1, image_url: 1, date_of_birth: 1 }
+      );
+
+      // let book_review;
+      // const author_book_id = author_book.map((el) => el._id);
+      // for (let i = 0; i < author_book_id.length; i++) {
+      //   book_review = await bookReviewModel
+      //     .find({ book_id: author_book_id[i] })
+      //     .populate("book_id");
+      // }
+
+      const books = await bookModel.find({ author_id: author });
+      // console.log(books);
+      return res.status(200).send({ author: author, books: books });
     } else {
       return res.status(404).json({ Message: "author is not Exist" });
     }
@@ -125,6 +160,36 @@ const getAllAuthor = async (req, res) => {
   }
 };
 
+const popularBooks = async (req, res) => {
+  try {
+    const popularBooks = await bookReviewModel.aggregate([
+      { $sort: { average_rate: -1 } },
+      { $limit: 5 }
+    ])
+    console.log(popularBooks);
+    return res.status(200).send({ popular: popularBooks });
+  } catch (error) {
+    return res.status(500).send({ Message: "Server Error" });
+  }
+};
+
+const getAllReviewText = async (req, res) => {
+  try {
+    const review = await reviewModel.find({ book_id: req.params.id }).populate({
+      path: "user_id",
+      model: "user",
+      select: "first_name last_name image_url",
+    });
+    if (review.length > 0) {
+      return res.status(200).send(review);
+    } else {
+      return res.status(404).send({ Message: "No review Found" });
+    }
+  } catch (error) {
+    return res.status(500).send({ Message: error.message });
+  }
+};
+
 module.exports = {
   getAllBooksForUsers,
   getBookById,
@@ -132,4 +197,6 @@ module.exports = {
   getBookByCategoryId,
   getAuthorById,
   getAllAuthor,
+  popularBooks,
+  getAllReviewText,
 };

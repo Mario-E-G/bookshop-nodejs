@@ -6,6 +6,8 @@ const {
   getAuthorById,
   getBookByCategoryId,
   getAllAuthor,
+  popularBooks,
+  getAllReviewText,
 } = require("../../controller/forAllUsersController/defaultRoute");
 const { loginAuth } = require("../../controller/auth/logInAuth");
 const { registerAuth } = require("../../controller/auth/registerAuth");
@@ -35,5 +37,11 @@ router.get("/author/:id", getAuthorById);
 
 //=========getAllAuthors==========================================
 router.get("/author", getAllAuthor);
+
+//=============Popular-Books=========================================
+router.get("/popularbook", popularBooks);
+
+//=======================================================================
+router.get("/bookreview/review/:id", getAllReviewText);
 
 module.exports = router;

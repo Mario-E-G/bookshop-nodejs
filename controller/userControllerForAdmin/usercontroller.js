@@ -2,8 +2,12 @@ const userModel = require("../../model/userModel");
 
 //add User
 const userCreateRoute = async (req, res) => {
-  const userData = { ...req.body };
   try {
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for accessing" });
+    }
+    const userData = { ...req.body };
     const user = await userModel.create(userData);
     return res.status(201).send(user);
   } catch (error) {
@@ -13,13 +17,17 @@ const userCreateRoute = async (req, res) => {
 
 //update User
 const userUpdateRoute = async (req, res) => {
-  const userData = { ...req.body };
   try {
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for accessing" });
+    }
+    const userData = { ...req.body };
     const user = await userModel.findByIdAndUpdate(req.params.id, userData);
     if (user) {
       return res
-        .status(201)
-        .send({ Message: `User_id ${user._id} Updated Success` });
+        .status(200)
+        .send({ Message: `User_id ${user._id} Updated Success`, user: user });
     } else {
       return res.status(404).send({ Message: "User is not Exist" });
     }
@@ -32,10 +40,12 @@ const userUpdateRoute = async (req, res) => {
 const userDeleteRoute = async (req, res) => {
   try {
     const user = await userModel.findByIdAndDelete(req.params.id);
+    const remainingUSers = await userModel.find({});
     if (user) {
-      return res
-        .status(201)
-        .send({ Message: `User_id ${user._id} Deleted Success` });
+      return res.status(201).send({
+        Message: `User_id ${user._id} Deleted Success`,
+        users: remainingUSers,
+      });
     } else {
       return res.status(404).send({ Message: "User is not Exist" });
     }

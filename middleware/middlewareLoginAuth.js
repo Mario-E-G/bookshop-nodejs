@@ -6,7 +6,6 @@ const USER_TOKEN_KEY = process.env.USER_TOKEN_KEY;
 
 const loginAuth = async function (req, res, next) {
   const token = req.headers["access-token"];
-
   if (!token) {
     return res
       .status(403)

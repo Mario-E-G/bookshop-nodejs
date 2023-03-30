@@ -17,8 +17,8 @@ const authorSchema = mongoose.Schema({
     type: String,
     default: `http://localhost:5000/images/user-defualt.png`,
   },
-  date_of_birth: { type: Date },
-  author_info: { type: String },
+  date_of_birth: { type: Date, default: "" },
+  author_info: { type: String, default: "" },
 });
 
 const authorModel = mongoose.model("author", authorSchema);

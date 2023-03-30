@@ -17,6 +17,7 @@ const {
   adminGetBookById,
   adminGetAuthorById,
 } = require("../../controller/adminController/adminProfileRoute");
+const upload = require("../../middleware/multer");
 const router = express.Router();
 
 //admin-profile
@@ -33,14 +34,14 @@ router.get("/book/:id", adminGetBookById);
 router.get("/author/:id", adminGetAuthorById);
 
 //add-new(category-book-author)
-router.post("/category", adminAddNewCategory);
-router.post("/book", adminAddNewBook);
-router.post("/author", adminAddNewAuthor);
+router.post("/category", upload.single("image_url"), adminAddNewCategory);
+router.post("/book", upload.single("image_url"), adminAddNewBook);
+router.post("/author", upload.single("image_url"), adminAddNewAuthor);
 
 //update(category-book-author)
-router.patch("/category/:id", adminUpdateCategory);
-router.patch("/book/:id", adminUpdateBook);
-router.patch("/author/:id", adminUpdateAuthor);
+router.patch("/category/:id", upload.single("image_url"), adminUpdateCategory);
+router.patch("/book/:id", upload.single("image_url"), adminUpdateBook);
+router.patch("/author/:id", upload.single("image_url"), adminUpdateAuthor);
 
 //delete(category-book-author)
 router.delete("/category/:id", adminDeleteCategory);
