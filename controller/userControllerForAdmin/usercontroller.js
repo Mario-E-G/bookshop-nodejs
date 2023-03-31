@@ -7,8 +7,16 @@ const userCreateRoute = async (req, res) => {
     if (!token) {
       return res.status(400).send({ Message: "A token is required for accessing" });
     }
-    const userData = { ...req.body };
-    const user = await userModel.create(userData);
+
+    let image_url;
+    let newUser;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      newUser = { ...req.body, image_url: image_url };
+    } else {
+      newUser = { ...req.body };
+    }
+    const user = await userModel.create(newUser);
     return res.status(201).send(user);
   } catch (error) {
     return res.status(500).send({ Message: error.message });
@@ -22,8 +30,16 @@ const userUpdateRoute = async (req, res) => {
     if (!token) {
       return res.status(400).send({ Message: "A token is required for accessing" });
     }
-    const userData = { ...req.body };
-    const user = await userModel.findByIdAndUpdate(req.params.id, userData);
+
+    let updatedUser;
+    let image_url;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      updatedUser = { ...req.body, image_url: image_url };
+    } else {
+      updatedUser = { ...req.body };
+    }
+    const user = await userModel.findByIdAndUpdate(req.params.id, updatedUser);
     if (user) {
       return res
         .status(200)

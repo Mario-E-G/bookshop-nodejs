@@ -18,13 +18,13 @@ const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
-      return cb(new Error("Only JPG, JPEG, and PNG files are allowed"));
-    }
-    cb(null, true);
+    // if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
+    //   return cb({ Message: "Only JPG, JPEG, and PNG files are allowed" });
+    // }
+cb(null, true);
   },
-  limits: {
-    fileSize: 1024 * 1024 * 5, // 5 MB
+limits: {
+  fileSize: 1024 * 1024 * 5, // 5 MB
   },
 });
 

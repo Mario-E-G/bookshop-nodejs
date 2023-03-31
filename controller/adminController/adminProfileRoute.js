@@ -92,15 +92,22 @@ const adminGetAuthorById = async (req, res) => {
 //////////////////////////////////////Add////////////////////////////////////////
 //add new Category
 const adminAddNewCategory = async (req, res) => {
-  let image_url;
-  let newCategory;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    newCategory = { ...req.body, image_url: image_url };
-  } else {
-    newCategory = { ...req.body };
-  }
+
   try {
+
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for Accessing" });
+    }
+    let image_url;
+    let newCategory;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      newCategory = { ...req.body, image_url: image_url };
+    } else {
+      newCategory = { ...req.body };
+    }
+
     const createdCategory = await categoryModel.create(newCategory);
     if (createdCategory) {
       return res.status(200).json(createdCategory);
@@ -111,15 +118,21 @@ const adminAddNewCategory = async (req, res) => {
 };
 //add new book
 const adminAddNewBook = async (req, res) => {
-  let image_url;
-  let newBook;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    newBook = { ...req.body, image_url: image_url };
-  } else {
-    newBook = { ...req.body };
-  }
+
   try {
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "Token is required for accessing " });
+    }
+    let image_url;
+    let newBook;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      newBook = { ...req.body, image_url: image_url };
+    } else {
+      newBook = { ...req.body };
+    }
+
     const book = await bookModel.create(newBook);
     if (newBook) {
       return res.status(200).json(book);
@@ -130,15 +143,21 @@ const adminAddNewBook = async (req, res) => {
 };
 //add new author
 const adminAddNewAuthor = async (req, res) => {
-  let image_url;
-  let newAuhtor;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    newAuhtor = { ...req.body, image_url: image_url };
-  } else {
-    newAuhtor = { ...req.body };
-  }
   try {
+
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for Accessing" });
+    }
+    let image_url;
+    let newAuhtor;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      newAuhtor = { ...req.body, image_url: image_url };
+    } else {
+      newAuhtor = { ...req.body };
+    }
+
     const author = await authorModel.create(newAuhtor);
     if (author) {
       return res.status(200).send(author);
@@ -151,15 +170,22 @@ const adminAddNewAuthor = async (req, res) => {
 /////////////////////////////////////Update///////////////////////////////////////
 //update category
 const adminUpdateCategory = async (req, res) => {
-  let updatedCategory;
-  let image_url;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    updatedCategory = { ...req.body, image_url: image_url };
-  } else {
-    updatedCategory = { ...req.body };
-  }
+
   try {
+
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for Accessing" });
+    }
+    let updatedCategory;
+    let image_url;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      updatedCategory = { ...req.body, image_url: image_url };
+    } else {
+      updatedCategory = { ...req.body };
+    }
+
     const category = await categoryModel.findByIdAndUpdate(
       req.params.id,
       updatedCategory,
@@ -176,15 +202,21 @@ const adminUpdateCategory = async (req, res) => {
 };
 //update book
 const adminUpdateBook = async (req, res) => {
-  let image_url;
-  let bookData;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    bookData = { ...req.body, image_url: image_url };
-  } else {
-    bookData = { ...req.body };
-  }
   try {
+
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for Accessing" });
+    }
+    let image_url;
+    let bookData;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      bookData = { ...req.body, image_url: image_url };
+    } else {
+      bookData = { ...req.body };
+    }
+
     const book = await bookModel.findByIdAndUpdate(req.params.id, bookData, {
       new: true,
     });
@@ -199,15 +231,21 @@ const adminUpdateBook = async (req, res) => {
 };
 //update author
 const adminUpdateAuthor = async (req, res) => {
-  let image_url;
-  let authorData;
-  if (req.file) {
-    image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
-    authorData = { ...req.body, image_url: image_url };
-  } else {
-    authorData = { ...req.body };
-  }
+
   try {
+
+    const token = req.headers["access-token"];
+    if (!token) {
+      return res.status(400).send({ Message: "A token is required for Accessing" });
+    }
+    let image_url;
+    let authorData;
+    if (req.file) {
+      image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
+      authorData = { ...req.body, image_url: image_url };
+    } else {
+      authorData = { ...req.body };
+    }
     const author = await authorModel.findByIdAndUpdate(
       req.params.id,
       authorData,
