@@ -39,7 +39,7 @@ const userUpdateRoute = async (req, res) => {
     } else {
       updatedUser = { ...req.body };
     }
-    const user = await userModel.findByIdAndUpdate(req.params.id, updatedUser);
+    const user = await userModel.findByIdAndUpdate(req.params.id, updatedUser, { new: true });
     if (user) {
       return res
         .status(200)

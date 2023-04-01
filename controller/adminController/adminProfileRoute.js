@@ -129,6 +129,7 @@ const adminAddNewBook = async (req, res) => {
     if (req.file) {
       image_url = `${process.env.IMG_URL}/images/${req.file.filename}`;
       newBook = { ...req.body, image_url: image_url };
+      console.log(newBook);
     } else {
       newBook = { ...req.body };
     }
@@ -203,7 +204,6 @@ const adminUpdateCategory = async (req, res) => {
 //update book
 const adminUpdateBook = async (req, res) => {
   try {
-
     const token = req.headers["access-token"];
     if (!token) {
       return res.status(400).send({ Message: "A token is required for Accessing" });

@@ -169,6 +169,8 @@ const addReviewText = async (req, res) => {
     const bookReview = await reviewModel.create(newBookReview);
 
     if (bookReview) {
+      const allReviews = await reviewModel.find({}).populate("user_id");
+      return res.status(200).send({ review: allReviews, addedReview: bookReview, Message: "Review Added Successfully" });
       return res.status(200).send(bookReview);
     } else {
       return res.status(404).send({ Message: "Wrong book id or user id" });
@@ -340,7 +342,7 @@ const getFilterdBookReview = async (req, res) => {
     const user_id = req.params.id;
     const filter = req.query.filter;
 
-        if (req.query.filter == 'null'){
+    if (req.query.filter == 'null') {
       const book = await bookReviewModel.find({ user_id: user_id }).populate([
         {
           path: "book_id",
@@ -353,7 +355,7 @@ const getFilterdBookReview = async (req, res) => {
           },
         },
       ]);
-    
+
       if (book) {
         return res.status(200).send(book);
       } else {
@@ -375,7 +377,7 @@ const getFilterdBookReview = async (req, res) => {
             },
           },
         ]);
-            
+
       if (filterdBooksByStatus) {
         return res.status(200).send(filterdBooksByStatus);
       } else {
@@ -383,7 +385,7 @@ const getFilterdBookReview = async (req, res) => {
       }
     }
 
-    } catch (error) {
+  } catch (error) {
     return res.status(500).send({ Message: "Error in retrieving book review" });
   }
 }
@@ -397,6 +399,8 @@ const getBookRate = async (req, res) => {
       $and: [{ book_id: book_id }, { user_id: user_id }],
     });
 
+    console.log(bookRate);
+
     if (bookRate) {
       return res.status(200).send({ rate: bookRate });
     } else {
@@ -409,7 +413,7 @@ const getBookRate = async (req, res) => {
 
 const deleteReviewText = async (req, res) => {
   try {
-     const token = req.headers["access-token"];
+    const token = req.headers["access-token"];
 
     if (!token) {
       return res
@@ -419,10 +423,10 @@ const deleteReviewText = async (req, res) => {
     const review_id = req.params.review_id;
 
     const review = await reviewModel.findOneAndDelete(review_id);
-    
+
     if (review) {
       const allReviews = await reviewModel.find({}).populate("user_id");
-      return res.status(200).send({review:allReviews, deletedReview: review, Message:"Review Deleted Successfully"});
+      return res.status(200).send({ review: allReviews, deletedReview: review, Message: "Review Deleted Successfully" });
     } else {
       return res.status(404).send({ Message: "Wrong review id" });
     }
@@ -433,7 +437,7 @@ const deleteReviewText = async (req, res) => {
 
 const updateReviewText = async (req, res) => {
   try {
-   const token = req.headers["access-token"];
+    const token = req.headers["access-token"];
 
     if (!token) {
       return res
@@ -442,7 +446,7 @@ const updateReviewText = async (req, res) => {
     }
     const review_id = req.params.review_id;
     const update = { ...req.body };
-    
+
     const review = await reviewModel.findOneAndUpdate(
       review_id,
       update,
@@ -454,10 +458,10 @@ const updateReviewText = async (req, res) => {
     } else {
       return res.status(404).send({ Message: "Wrong review id" });
     }
- } catch (error) {
-  
- }
-  
+  } catch (error) {
+
+  }
+
 }
 
 module.exports = {

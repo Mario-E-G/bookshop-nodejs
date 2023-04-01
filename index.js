@@ -14,7 +14,13 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/images", express.static("images"));
+
+const imagesDir = "images";
+if (!fs.existsSync(imagesDir)) {
+  fs.mkdirSync(imagesDir);
+}
+app.use(`/${imagesDir}`, express.static(imagesDir));
+
 
 // Middleware To log all action happen to DB
 app.use(
