@@ -21,10 +21,10 @@ const upload = multer({
     // if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
     //   return cb({ Message: "Only JPG, JPEG, and PNG files are allowed" });
     // }
-cb(null, true);
+    cb(null, true);
   },
-limits: {
-  fileSize: 1024 * 1024 * 5, // 5 MB
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5 MB
   },
 });
 

@@ -118,15 +118,57 @@ const getBookByCategoryId = async (req, res) => {
 
 //==================getAuthorById==================================
 const getAuthorById = async (req, res) => {
+  // try {
+  //   const author = await authorModel.findById(req.params.id);
+  //   if (author) {
+  //   const author_id = author._id;
+  //   const author_book = await bookModel.find(
+  //     { author_id: author_id },
+  //     { book_id: 1, name: 1, image_url: 1, date_of_birth: 1 }
+  //   );
+
+  // const author_book_id = author_book.map((el) => el._id);
+  // for (let i = 0; i < author_book_id.length; i++) {
+  //   book_review = await bookReviewModel
+  //     .find({ book_id: author_book_id[i] })
+  //     .populate("book_id");
+  // }
+
+  // const update_average_rate = await bookReviewModel.aggregate([
+  //   { $group: { _id: "$book_id", avg_val: { $avg: "$rate" } } },
+  // ]);
+  // console.log(update_average_rate);
+  // console.log(update_average_rate);
+  // update_average_rate.forEach(async (book) => {
+  //   await bookReviewModel.updateMany(
+  //     { book_id:  },
+  //     { $set: { average_rate: book.avg_val } }
+  //   );
+  // });
+
+
+  // const books = await bookModel.find({ author_id: author });
+  // return res.status(200).send({ author: author, books: books });
+  // } else {
+  //   return res.status(404).json({ Message: "author is not Exist" });
+  // }
+  // } catch (err) {
+  //   return res.status(500).send({ Message: "Try again later....." });
+  // }
+
+
+
+
   try {
     const author = await authorModel.findById(req.params.id);
     if (author) {
-      //   const author_id = author._id;
-      //   const author_book = await bookModel.find(
-      //     { author_id: author_id },
-      //     { book_id: 1, name: 1, image_url: 1, date_of_birth: 1 }
-      //   );
+      const author_id = author._id;
+      const author_book = await bookModel.find(
+        { author_id: author_id },
+        { book_id: 1, name: 1, image_url: 1, date_of_birth: 1 }
+      );
 
+      // let book_review;
       // const author_book_id = author_book.map((el) => el._id);
       // for (let i = 0; i < author_book_id.length; i++) {
       //   book_review = await bookReviewModel
@@ -134,29 +176,16 @@ const getAuthorById = async (req, res) => {
       //     .populate("book_id");
       // }
 
-      // const update_average_rate = await bookReviewModel.aggregate([
-      //   { $group: { _id: "$book_id", avg_val: { $avg: "$rate" } } },
-      // ]);
-      // console.log(update_average_rate);
-      // console.log(update_average_rate);
-      // update_average_rate.forEach(async (book) => {
-      //   await bookReviewModel.updateMany(
-      //     { book_id:  },
-      //     { $set: { average_rate: book.avg_val } }
-      //   );
-      // });
-
-
-      // const books = await bookModel.find({ author_id: author });
-      // return res.status(200).send({ author: author, books: books });
+      const books = await bookModel.find({ author_id: author });
+      // console.log(books);
+      return res.status(200).send({ author: author, books: books });
     } else {
       return res.status(404).json({ Message: "author is not Exist" });
     }
   } catch (err) {
     return res.status(500).send({ Message: "Try again later....." });
   }
-};
-
+}
 //====================getAllAuthors==========================
 const getAllAuthor = async (req, res) => {
   try {
